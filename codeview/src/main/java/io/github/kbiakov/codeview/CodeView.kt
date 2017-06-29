@@ -30,24 +30,7 @@ class CodeView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
      * Primary constructor.
      */
     init {
-        val isAnimateOnStart = visibility == VISIBLE && { ctx: Context, ats: AttributeSet ->
-            val a = ctx.theme.obtainStyledAttributes(ats, R.styleable.CodeView, 0, 0)
-
-            try {
-                a.getBoolean(R.styleable.CodeView_animateOnStart, true)
-            } finally {
-                a.recycle()
-            }
-        }(context, attrs)
-
-        alpha = if (isAnimateOnStart) 0f else Consts.ALPHA
-
         inflate(context, R.layout.layout_code_view, this)
-
-        if (isAnimateOnStart)
-            animate()
-                    .setDuration(Consts.DELAY * 5)
-                    .alpha(Consts.ALPHA)
 
         // TODO: add shadow color customization
         vShadowRight = findViewById(R.id.v_shadow_right)
@@ -65,15 +48,7 @@ class CodeView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
      */
     private fun highlight() {
         getAdapter()?.highlight {
-
-            animate()
-                    .setDuration(Consts.DELAY * 2)
-                    .alpha(.1f)
-
-            delayed {
-                animate().alpha(1f)
-                getAdapter()?.notifyDataSetChanged()
-            }
+            getAdapter()?.notifyDataSetChanged()
         }
     }
 
