@@ -49,11 +49,15 @@ fun extractLines(source: String) = listOf(*source.split("\n").toTypedArray())
  * @return Spanned HTML string
  */
 @Suppress("deprecation")
-fun html(content: String): Spanned =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-            Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY)
-        else
-            Html.fromHtml(content)
+fun html(content: String): Spanned {
+    val indented = content.replace(Regex("(^\\s+|\\s+$)")) { it.value.fold(""){ acc, _ -> acc + "\u0020"} }
+
+    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+        Html.fromHtml(indented, Html.FROM_HTML_MODE_LEGACY)
+    else
+        Html.fromHtml(indented)
+}
+
 
 object Thread {
     /**
