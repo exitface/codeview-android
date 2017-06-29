@@ -36,6 +36,7 @@ object CodeHighlighter {
         for (result in results) {
           val color = colorsMap.getColor(result)
           val content = parseContent(source, result)
+          val indented = content.replace(Regex("(^\\s+|\\s+$)")) { it.value.fold(""){ acc, char -> acc + "\u0020"} }
           highlighted.append(content.withFontParams(color))
         }
 
